@@ -10,14 +10,15 @@ let snakeBody = [];
 let gameOver = false;
 let score = 0;
 
-// Garsai
 const bgMusic = document.getElementById("bgMusic");
 const eatSound = document.getElementById("eatSound");
+const gameOverSound = document.getElementById("gameOverSound");
 bgMusic.volume = 0.3;
 eatSound.volume = 0.6;
+gameOverSound.volume = 0.5;
 
 let highScore = localStorage.getItem("high-score") || 0;
-highScoreElement.innerText = `Rekordas: ${highScore}`;
+highScoreElement.innerText = `Record: ${highScore}`;
 
 const updateFoodPosition = () => {
   foodX = Math.floor(Math.random() * 30) + 1;
@@ -27,8 +28,14 @@ const updateFoodPosition = () => {
 const handleGameOver = () => {
   clearInterval(setIntervalId);
   bgMusic.pause();
-  alert("Žaidimas baigtas!");
-  location.reload();
+
+  gameOverSound.currentTime = 0;
+  gameOverSound.play();
+
+  setTimeout(() => {
+    alert("Game over!");
+    location.reload();
+  }, 500); 
 };
 
 const changeDirection = (e) => {
@@ -47,7 +54,7 @@ const changeDirection = (e) => {
   }
 
   if (bgMusic.paused) {
-    bgMusic.play().catch(err => console.warn("Muzika nepasileido:", err));
+    bgMusic.play().catch(err => console.warn("Music not playing:", err));
   }
 };
 
